@@ -1,0 +1,15 @@
+<div class="dashboard-header">
+  <h2>Your Posts</h2>
+  <div class="posts-container">
+      @if (posts.length === 0) {
+        <div>
+          <p>No posts found.</p>
+        </div>
+      } @else {
+        @for (post of posts; track post.id) {
+          <app-post-card [post]="post"></app-post-card>
+        }
+      }
+  </div>
+  <button mat-button color="warn" class="logout-btn" (click)="logout()">Logout</button>
+</div>

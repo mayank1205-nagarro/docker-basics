@@ -1,0 +1,30 @@
+.post-card {
+  margin: 15px;
+}
+
+mat-card {
+  margin: 16px;
+  padding: 12px;
+  max-width: 400px;
+  background-color: rgb(215, 243, 250);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+mat-card:hover { 
+    transform: translateY(-5px);
+    box-shadow: 0 8px 8px rgba(0,0,0,0.15);
+    cursor: pointer;
+}
+
+mat-card-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+mat-card-content {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #555;
+}
