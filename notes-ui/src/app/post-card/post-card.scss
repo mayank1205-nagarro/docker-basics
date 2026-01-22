@@ -1,6 +1,18 @@
 .post-card {
-  margin: 15px;
+  flex: 1 1 280px; /* responsive sizing */
+  margin: 12px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+}
+
 
 mat-card {
   margin: 16px;

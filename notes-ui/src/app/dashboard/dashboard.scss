@@ -1,15 +1,31 @@
+.dashboard {
+   background: #f0f4f8;
+   height: 100%;
+}
 .posts-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  font-size: 1.1rem;
+  color: #777;
+  text-align: center;
+  margin-top: 40px;
 }
 
 .dashboard-header {
   display: flex;
-  justify-content: space-between; /* pushes logout button to right */
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  padding: 12px 20px;
+  background: #f0f4f8;
+  border-radius: 8px;
 }
+.dashboard-header h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #333;
+  margin: 20px 20px 20px auto;
+}
+
 
 .logout-btn {
   background: linear-gradient(135deg, #89f7fe, #66a6ff);
@@ -20,6 +36,7 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  margin: 20px 20px 20px auto;
   transition: all 0.3s ease;
 }
 

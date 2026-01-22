@@ -1,15 +1,21 @@
-<div class="dashboard-header">
-  <h2>Your Posts</h2>
-  <div class="posts-container">
-      @if (posts.length === 0) {
-        <div>
-          <p>No posts found.</p>
-        </div>
-      } @else {
-        @for (post of posts; track post.id) {
-          <app-post-card [post]="post"></app-post-card>
-        }
-      }
+<div class="dashboard">
+  <div class="dashboard-header">
+    <div style="margin: 0 auto">
+      <h2>Your Posts</h2>
+    </div>
+    <div style="display: flex;">
+      <button mat-button color="warn" class="logout-btn" (click)="logout()">Logout</button>
+    </div>
   </div>
-  <button mat-button color="warn" class="logout-btn" (click)="logout()">Logout</button>
+  <div class="posts-container">
+    @if (posts.length === 0) {
+      <div style="margin: 0 auto">
+        <p>No posts found.</p>
+      </div>
+    } @else {
+      @for (post of posts; track post.id) {
+        <app-post-card [post]="post"></app-post-card>
+      }
+    }
+  </div>
 </div>
