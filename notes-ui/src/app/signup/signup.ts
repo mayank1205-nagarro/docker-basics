@@ -6,19 +6,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../services/auth';
+import { Router, RouterLink } from "@angular/router";
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.html',
   standalone: true,
   imports: [
-    ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule
-  ],
+    ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule,
+    RouterLink
+],
   styleUrls: ['./signup.scss']
 })
 export class Signup {
   signupForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, private toastr: ToastrService) {
     this.signupForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -34,8 +37,17 @@ export class Signup {
         this.signupForm.value.email,
         this.signupForm.value.password
       ).subscribe({
-        next: (res) => console.log('Signup success:', res),
-        error: (err) => console.error('Signup failed:', err)
+        next: (res) => {
+            const token = res.headers.get('Authorization');
+            console.log(token);
+            localStorage.setItem('token', token);
+            this.router.navigate(["/dashboard"]);
+            this.toastr.success("Signup successful!", 'Success', { positionClass: 'toast-top-right' });
+        },
+        error: (err) => {
+          console.error('Signup failed:', err)
+          this.toastr.error(err.error.message, 'Error', { positionClass: 'toast-top-right' });
+        }
       });
     }
   }

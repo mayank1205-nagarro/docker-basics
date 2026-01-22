@@ -4,22 +4,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.html',
   standalone: true,
   imports: [
-    ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule
-  ],
+    ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule,
+    RouterLink
+],
   styleUrls: ['./login.scss']
 })
 export class Login {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private toastr: ToastrService) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -44,8 +46,12 @@ export class Login {
             console.log(token);
             localStorage.setItem('token', token);
             this.router.navigate(["/dashboard"]);
+            this.toastr.success("login successful!", 'Success', { positionClass: 'toast-top-right' });
         },
-        error: (err) => console.error('Login failed:', err)
+        error: (err) => {
+          console.error('Login failed:', err);
+          this.toastr.error(err.error.message, 'Error', { positionClass: 'toast-top-right' });
+        }
       });
     }
   }
