@@ -7,6 +7,10 @@
       <button mat-button color="warn" class="logout-btn" (click)="logout()">Logout</button>
     </div>
   </div>
+  <!-- Button to open modal -->
+  <button (click)="openCreatePostModal()" class="create-btn">
+    + Create Post
+  </button>
   <div class="posts-container">
     @if (posts.length === 0) {
       <div style="margin: 0 auto">
@@ -18,4 +22,11 @@
       }
     }
   </div>
+
+  <!-- Modal component -->
+  <app-create-post-modal
+    *ngIf="isModalOpen"
+    (close)="closeCreatePostModal()"
+    (postCreated)="addPost($event)">
+  </app-create-post-modal>
 </div>

@@ -22,4 +22,12 @@ export class PostService {
 
     return this.http.get<Post[]>(this.apiUrl, { headers });
   }
+
+  createPost(post: Post) {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    return this.http.post<Post>(this.apiUrl, post, { headers });
+  }
 }

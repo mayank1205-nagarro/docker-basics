@@ -3,13 +3,16 @@ import { Post, PostService } from '../services/post.service';
 import { PostCardComponent } from '../post-card/post-card';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ɵInternalFormsSharedModule } from "@angular/forms";
+import { FormsModule, ɵInternalFormsSharedModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
+import { CreatePostModal } from "../create-post-modal/create-post-modal";
+import { ToastrService } from 'ngx-toastr';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [PostCardComponent, MatCardModule, ɵInternalFormsSharedModule, CommonModule],
+  imports: [PostCardComponent, MatCardModule, ɵInternalFormsSharedModule, CommonModule, CreatePostModal, FormsModule],
   providers: [PostService],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss']
@@ -17,8 +20,37 @@ import { CommonModule } from '@angular/common';
 export class Dashboard implements OnInit {
   posts: Post[] = [];
   loading = true;
+  isModalOpen = false;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  openCreatePostModal() {
+    this.isModalOpen = true;
+  }
+
+  closeCreatePostModal() { 
+    this.isModalOpen = false; this.cd.detectChanges(); 
+  }
+
+
+
+  addPost(newPost: any) {
+    this.postService.createPost(newPost)
+      .subscribe({
+        next: (res) => {
+            this.toastr.success("Post creation successful!", 'Success', { positionClass: 'toast-top-right' });
+            this.closeCreatePostModal();
+        },
+        error: (err) => {
+          console.error('Error creating post:', err);
+          this.toastr.error(err.error.message, 'Error', { positionClass: 'toast-top-right' });
+        }
+      });
+  }
+
+  constructor(private router: Router,
+     private route: ActivatedRoute, 
+     private toastr: ToastrService, 
+     private postService: PostService,
+     private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.posts = this.route.snapshot.data['posts'];
