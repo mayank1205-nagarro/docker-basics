@@ -12,12 +12,12 @@
     + Create Post
   </button>
   <div class="posts-container">
-    @if (posts.length === 0) {
+    @if ((posts$ | async)?.length === 0) {
       <div style="margin: 0 auto">
         <p>No posts found.</p>
       </div>
     } @else {
-      @for (post of posts; track post.id) {
+      @for (post of posts$ | async; track post.id) {
         <app-post-card [post]="post"></app-post-card>
       }
     }

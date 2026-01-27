@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { CreatePostModal } from "../create-post-modal/create-post-modal";
 import { ToastrService } from 'ngx-toastr';
 import { ChangeDetectorRef } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +19,7 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./dashboard.scss']
 })
 export class Dashboard implements OnInit {
-  posts: Post[] = [];
+  posts$!: Observable<Post[]>;
   loading = true;
   isModalOpen = false;
 
@@ -27,7 +28,8 @@ export class Dashboard implements OnInit {
   }
 
   closeCreatePostModal() { 
-    this.isModalOpen = false; this.cd.detectChanges(); 
+    this.isModalOpen = false;
+    this.cd.detectChanges(); 
   }
 
 
@@ -36,6 +38,7 @@ export class Dashboard implements OnInit {
     this.postService.createPost(newPost)
       .subscribe({
         next: (res) => {
+            this.postService.addPost(newPost);
             this.toastr.success("Post creation successful!", 'Success', { positionClass: 'toast-top-right' });
             this.closeCreatePostModal();
         },
@@ -53,7 +56,12 @@ export class Dashboard implements OnInit {
      private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.posts = this.route.snapshot.data['posts'];
+    this.posts$ = this.postService.posts$;
+    this.route.data.subscribe(data => {
+      if (data['posts']) {
+        this.postService.setPosts(data['posts']); // sync resolver result
+      }
+    });
     this.loading = false;
   }
 
